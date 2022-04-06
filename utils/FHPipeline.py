@@ -188,7 +188,7 @@ class FHPipeline():
         if importance:
         
             model.fit(self.X_train, self.y_train)
-            importances = pd.Series(data=model.feature_importances_, index=self.columns)
+            importances = pd.Series(data=model.feature_importances_, index=self.X_columns)
             importances_sorted = importances.sort_values()
             importances_sorted.plot(kind='barh', color='lightgreen')
             plt.title('Feature Importances')
