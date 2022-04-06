@@ -8,27 +8,24 @@ from sklearn.model_selection import cross_val_score
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split, learning_curve
 from sklearn.metrics import classification_report
-
 class FHPipeline():
-    def __init__(self, X, y, *args, **kwargs):
+    def __init__(self, X, y, SEED, *args, **kwargs):
         self.X = X
         self.y = y
-        self.X_columns = X.columns
+        self.X_columns = list(X.columns)
         # scaling
         scaler = StandardScaler()
-        X_scaled = scaler.fit_transform(X)
+        self.X_scaled = scaler.fit_transform(X)
 
-        SEED = 31
-
-        self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(X_scaled, y, test_size=0.2, random_state=SEED)
-        
+        self.SEED = SEED
+        self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(self.X_scaled, self.y, test_size=0.2, random_state=self.SEED)
         self.models = {}
         
         
         
     def add_model(self, model):
         model_name = type(model).__name__
-        self.models[model_name] = model
+        self.models[model_name] = model()
         
     def plot_learning_curve(self, estimator, title, X, y, axes=None, ylim=None, cv=None, n_jobs=None,train_sizes=np.linspace(0.1, 1.0, 5)):
         """
@@ -176,8 +173,6 @@ class FHPipeline():
         predictions = model.predict(self.X_test)
         print(classification_report(self.y_test, predictions))
         
-    
-    
     def simple_fit_score(self, model, n, importance=False):
         model_name = type(model).__name__
         cv_score = cross_val_score(model, self.X_train, self.y_train, cv=n)
@@ -186,21 +181,14 @@ class FHPipeline():
         print('Minimum Score: ', cv_score.min())
         print('Mean Score: ', cv_score.mean())
         if importance:
-        
             model.fit(self.X_train, self.y_train)
+            
             importances = pd.Series(data=model.feature_importances_, index=self.X_columns)
+            print(importances)
             importances_sorted = importances.sort_values()
             importances_sorted.plot(kind='barh', color='lightgreen')
             plt.title('Feature Importances')
             plt.show()
-    
-    # def plot_auc_roc(self, model):
-    #     from sklearn.metrics import roc_auc_score, RocCurveDisplay
-    #     RocCurveDisplay.from_estimator(model, self.X_train, self.y_train)
-    #     model.fit(self.X_train, self.y_train)
-    #     y_pred_proba = model.predict(self.X_test)[:,1]
-    #     roc_auc = roc_auc_score(self.y_test, y_pred_proba)
-    #     print(f'ROC AUC score: {roc_auc}')
         
         
         
