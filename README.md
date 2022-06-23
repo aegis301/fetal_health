@@ -10,7 +10,7 @@ To run the notebooks, put the data found under the link posted above inside the 
 
 ## How to Read
 
-If you're interested in my work, you can go through the Fetal_Health.ipynb notebook. It contains a condensed version of my work on data exploration, feature selection, feature engineering and model training, as well as some work on data clustering. However, extensive clustering and deep learning are not (yet) implemented in this project.
+If you're interested in my work, you can go through the Fetal_Health.ipynb notebook. It contains a condensed version of my work on data exploration, feature selection, feature engineering and model training, as well as some work on data clustering. However, extensive clustering and deep learning are not (yet) implemented in this project. The other notebooks are a more extensive representation of my reasoning and are meant to complete the documentation, they do not contain additional information that is relevant to the reader and can be skipped if no details are required.
 
 ## TL;DR
 
